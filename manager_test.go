@@ -27,17 +27,17 @@ func TestMain(m *testing.M) {
 		{"lipgloss-basic-end", testStyle.Render("testing") + "a", testStyle.Render("testing") + "a", nil},
 		{"lipgloss-basic-start-end", "a" + testStyle.Render("testing") + "a", "a" + testStyle.Render("testing") + "a", nil},
 		{"lipgloss-basic-between", testStyle.Render("testing") + "a" + testStyle.Render("testing"), testStyle.Render("testing") + "a" + testStyle.Render("testing"), nil},
-		{"id-empty", Mark("testing1", ""), "", nil},
-		{"id-single-start", "a" + Mark("testing2", "a"), "aa", []string{"testing2"}},
-		{"id-single-end", Mark("testing3", "a") + "a", "aa", []string{"testing3"}},
-		{"id-single-start-end", "a" + Mark("testing4", "b") + "a", "aba", []string{"testing4"}},
-		{"id-single-between", Mark("testing5", "b") + "a" + Mark("testing6", "b"), "bab", []string{"testing5", "testing6"}},
-		{"id-with-lipgloss-start", testStyle.Render(Mark("testing7", "testing") + "testing"), testStyle.Render("testingtesting"), []string{"testing7"}},
-		{"id-with-lipgloss-end", testStyle.Render("testing" + Mark("testing8", "testing")), testStyle.Render("testingtesting"), []string{"testing8"}},
-		{"id-multi-empty", Mark("foo1", "") + Mark("bar1", ""), "", nil},
-		{"id-multi-start", "a" + Mark("foo2", "b") + Mark("bar2", "c"), "abc", []string{"foo2", "bar2"}},
-		{"id-multi-end", Mark("foo3", "a") + Mark("bar3", "b") + "c", "abc", []string{"foo3", "bar3"}},
-		{"id-multi-start-end", "a" + Mark("foo4", "b") + Mark("bar4", "c") + "d", "abcd", []string{"foo4", "bar4"}},
+		{"rid-empty", Mark("testing1", ""), "", nil},
+		{"rid-single-start", "a" + Mark("testing2", "a"), "aa", []string{"testing2"}},
+		{"rid-single-end", Mark("testing3", "a") + "a", "aa", []string{"testing3"}},
+		{"rid-single-start-end", "a" + Mark("testing4", "b") + "a", "aba", []string{"testing4"}},
+		{"rid-single-between", Mark("testing5", "b") + "a" + Mark("testing6", "b"), "bab", []string{"testing5", "testing6"}},
+		{"rid-with-lipgloss-start", testStyle.Render(Mark("testing7", "testing") + "testing"), testStyle.Render("testingtesting"), []string{"testing7"}},
+		{"rid-with-lipgloss-end", testStyle.Render("testing" + Mark("testing8", "testing")), testStyle.Render("testingtesting"), []string{"testing8"}},
+		{"rid-multi-empty", Mark("foo1", "") + Mark("bar1", ""), "", nil},
+		{"rid-multi-start", "a" + Mark("foo2", "b") + Mark("bar2", "c"), "abc", []string{"foo2", "bar2"}},
+		{"rid-multi-end", Mark("foo3", "a") + Mark("bar3", "b") + "c", "abc", []string{"foo3", "bar3"}},
+		{"rid-multi-start-end", "a" + Mark("foo4", "b") + Mark("bar4", "c") + "d", "abcd", []string{"foo4", "bar4"}},
 		{"inception", Mark("foo", Mark("bar", "b")), "b", []string{"foo", "bar"}},
 		{"long-x1", "a" + Mark("longtest5", longStyle.Render("testing")) + "a", "a" + longStyle.Render("testing") + "a", []string{"longtest5"}},
 		{"long-x2", strings.Repeat("a"+Mark("longtest", longStyle.Render("testing"))+"a", 1), strings.Repeat("a"+longStyle.Render("testing")+"a", 1), []string{"longtest"}},
@@ -109,7 +109,7 @@ func TestScan(t *testing.T) {
 				time.Sleep(15 * time.Millisecond)
 				for _, id := range test.ids {
 					if xy := Get(id); xy.IsZero() {
-						t.Errorf("id %q not found", id)
+						t.Errorf("rid %q not found", id)
 					}
 				}
 			}

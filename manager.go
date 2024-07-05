@@ -7,6 +7,7 @@ package zone
 import (
 	"context"
 	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -113,12 +114,12 @@ func (m *Manager) Enabled() bool {
 //
 //	func NewModel() tea.Model {
 //		return &model{
-//			id: zone.NewPrefix(),
+//			rid: zone.NewPrefix(),
 //		}
 //	}
 //
 //	type model struct {
-//		id     string
+//		rid     string
 //		active int
 //		items  []string
 //	}
@@ -129,7 +130,7 @@ func (m *Manager) Enabled() bool {
 //		case tea.MouseMsg:
 //			// [...]
 //			for i, item := range m.items {
-//				if zone.Get(m.id + item.name).InBounds(msg) {
+//				if zone.Get(m.rid + item.name).InBounds(msg) {
 //					m.active = i
 //					break
 //				}
@@ -139,7 +140,7 @@ func (m *Manager) Enabled() bool {
 //	}
 //
 //	func (m model) View() string {
-//		return zone.Mark(m.id+"some-other-id", "rendered stuff here")
+//		return zone.Mark(m.rid+"some-other-rid", "rendered stuff here")
 //	}
 func (m *Manager) NewPrefix() string {
 	return "zone_" + strconv.FormatInt(atomic.AddInt64(&prefixCounter, 1), 10) + "__"
@@ -193,6 +194,19 @@ func (m *Manager) Get(id string) (zone *ZoneInfo) {
 	return zone
 }
 
+func (m *Manager) GetPrefix(id string) []*ZoneInfo {
+	m.zoneMu.RLock()
+	defer m.zoneMu.RUnlock()
+
+	var zones []*ZoneInfo
+	for k, v := range m.zones {
+		if strings.HasPrefix(k, id) {
+			zones = append(zones, v)
+		}
+	}
+	return zones
+}
+
 // getReverse returns the component ID from a generated ID (that includes ANSI
 // escape codes).
 func (m *Manager) getReverse(id string) (resolved string) {
@@ -209,8 +223,8 @@ func (m *Manager) zoneWorker() {
 			return
 		case xy := <-m.setChan:
 			m.zoneMu.Lock()
-			if xy.id != "" {
-				m.zones[m.getReverse(xy.id)] = xy
+			if xy.rid != "" {
+				m.zones[m.getReverse(xy.rid)] = xy
 			} else {
 				// Assume previous iterations are cleared.
 				for k := range m.zones {
@@ -229,9 +243,9 @@ func (m *Manager) zoneWorker() {
 // by the outer most model/component of your application, and not inside of a
 // model/component child.
 //
-// Scan buffers the zone info to be stored, so an immediate call to Get(id) may
+// Scan buffers the zone info to be stored, so an immediate call to Get(rid) may
 // not return the correct information. Thus it's recommended to primarily use
-// Get(id) for actions like mouse events, which don't occur immediately after a
+// Get(rid) for actions like mouse events, which don't occur immediately after a
 // view shift (where the previously stored zone info might be different).
 //
 // When the zone manager is disabled (via SetEnabled(false)), Scan() will return

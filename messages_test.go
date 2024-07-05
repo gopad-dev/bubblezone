@@ -45,7 +45,7 @@ func TestAnyInBounds(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 	xy := Get("foo")
 	if xy.IsZero() {
-		t.Error("id not found")
+		t.Error("rid not found")
 	}
 
 	_, _ = m.Update(tea.MouseMsg{X: 4, Y: 2})
@@ -54,7 +54,7 @@ func TestAnyInBounds(t *testing.T) {
 	var contains bool
 	for _, msg := range m.received {
 		if evt, ok := msg.(MsgZoneInBounds); ok {
-			if evt.Zone.id == xy.id {
+			if evt.Zone.rid == xy.rid {
 				contains = true
 				break
 			}
@@ -95,7 +95,7 @@ func TestAnyInBoundsAndUpdate(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 	xy := Get("foo")
 	if xy.IsZero() {
-		t.Error("id not found")
+		t.Error("rid not found")
 	}
 
 	m, _ = m.Update(tea.MouseMsg{X: 4, Y: 2})
@@ -104,7 +104,7 @@ func TestAnyInBoundsAndUpdate(t *testing.T) {
 	var contains bool
 	for _, msg := range m.(testModelValue).received {
 		if evt, ok := msg.(MsgZoneInBounds); ok {
-			if evt.Zone.id == xy.id {
+			if evt.Zone.rid == xy.rid {
 				contains = true
 				break
 			}

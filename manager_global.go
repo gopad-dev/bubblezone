@@ -58,12 +58,12 @@ func Enabled() bool {
 //
 //	func NewModel() tea.Model {
 //		return &model{
-//			id: zone.NewPrefix(),
+//			rid: zone.NewPrefix(),
 //		}
 //	}
 //
 //	type model struct {
-//		id     string
+//		rid     string
 //		active int
 //		items  []string
 //	}
@@ -74,7 +74,7 @@ func Enabled() bool {
 //		case tea.MouseMsg:
 //			// [...]
 //			for i, item := range m.items {
-//				if zone.Get(m.id + item.name).InBounds(msg) {
+//				if zone.Get(m.rid + item.name).InBounds(msg) {
 //					m.active = i
 //					break
 //				}
@@ -84,7 +84,7 @@ func Enabled() bool {
 //	}
 //
 //	func (m model) View() string {
-//		return zone.Mark(m.id+"some-other-id", "rendered stuff here")
+//		return zone.Mark(m.rid+"some-other-rid", "rendered stuff here")
 //	}
 func NewPrefix() string {
 	DefaultManager.checkInitialized()
@@ -115,14 +115,19 @@ func Get(id string) (a *ZoneInfo) {
 	return DefaultManager.Get(id)
 }
 
+func GetPrefix(id string) []*ZoneInfo {
+	DefaultManager.checkInitialized()
+	return DefaultManager.GetPrefix(id)
+}
+
 // Scan will scan the view output, searching for zone markers, returning the
 // original view output with the zone markers stripped. Scan() should be used
 // by the outer most model/component of your application, and not inside of a
 // model/component child.
 //
-// Scan buffers the zone info to be stored, so an immediate call to Get(id) may
+// Scan buffers the zone info to be stored, so an immediate call to Get(rid) may
 // not return the correct information. Thus it's recommended to primarily use
-// Get(id) for actions like mouse events, which don't occur immediately after a
+// Get(rid) for actions like mouse events, which don't occur immediately after a
 // view shift (where the previously stored zone info might be different).
 //
 // When the zone manager is disabled (via SetEnabled(false)), Scan() will return

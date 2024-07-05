@@ -17,12 +17,13 @@ func TestValidPosition(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 	xy := Get("foo")
 	if xy.IsZero() {
-		t.Error("id not found")
+		t.Error("rid not found")
 	}
 
 	if xy.StartX != 4 || xy.StartY != 2 || xy.EndX != 12 || xy.EndY != 3 {
 		t.Errorf("got %#v, want %#v", xy, &ZoneInfo{
 			id:        xy.id,
+			rid:       xy.rid,
 			iteration: xy.iteration,
 			StartX:    4,
 			StartY:    2,
@@ -38,7 +39,7 @@ func TestInBounds(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 	xy := Get("foo")
 	if xy.IsZero() {
-		t.Error("id not found")
+		t.Error("rid not found")
 	}
 
 	// Outside left.
@@ -108,7 +109,7 @@ func TestPos(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 	xy := Get("foo")
 	if xy.IsZero() {
-		t.Error("id not found")
+		t.Error("rid not found")
 	}
 
 	if x, y := xy.Pos(tea.MouseMsg{X: 4, Y: 2}); x != 0 || y != 0 {

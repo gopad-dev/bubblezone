@@ -8,7 +8,8 @@ import tea "github.com/charmbracelet/bubbletea"
 
 // ZoneInfo holds information about the start and end positions of a zone.
 type ZoneInfo struct { // nolint:revive
-	id        string // rid of the zone.
+	id        string // id of the zone.
+	rid       string // rid of the zone.
 	iteration int    // The iteration of the zone, used for cleaning up old zones.
 
 	StartX int // StartX is the x coordinate of the top left cell of the zone (with 0 basis).
@@ -16,6 +17,10 @@ type ZoneInfo struct { // nolint:revive
 
 	EndX int // EndX is the x coordinate of the bottom right cell of the zone (with 0 basis).
 	EndY int // EndY is the y coordinate of the bottom right cell of the zone (with 0 basis).
+}
+
+func (z *ZoneInfo) ID() string {
+	return z.id
 }
 
 // IsZero returns true if the zone isn't known yet (is nil).
