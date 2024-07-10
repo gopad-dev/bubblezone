@@ -36,7 +36,7 @@ func (z *ZoneInfo) IsZero() bool {
 // using a box between the start and end coordinates. If you're looking to check
 // for abnormal shapes (e.g. something that might wrap a line, but can't be
 // determined using a box), you'll likely have to implement this yourself.
-func (z *ZoneInfo) InBounds(e tea.MouseMsg) bool {
+func (z *ZoneInfo) InBounds(e tea.MouseEvent) bool {
 	if z.IsZero() {
 		return false
 	}
@@ -59,7 +59,7 @@ func (z *ZoneInfo) InBounds(e tea.MouseMsg) bool {
 // Pos returns the coordinates of the mouse event relative to the zone, with a
 // basis of (0, 0) being the top left cell of the zone. If the zone is not known,
 // or the mouse event is not in the bounds of the zone, this will return (-1, -1).
-func (z *ZoneInfo) Pos(msg tea.MouseMsg) (x, y int) {
+func (z *ZoneInfo) Pos(msg tea.MouseEvent) (x, y int) {
 	if z.IsZero() || !z.InBounds(msg) {
 		return -1, -1
 	}

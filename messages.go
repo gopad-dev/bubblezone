@@ -15,10 +15,10 @@ import (
 type MsgZoneInBounds struct {
 	Zone *ZoneInfo // The zone that is in bounds.
 
-	Event tea.MouseMsg // The mouse event that caused the zone to be in bounds.
+	Event tea.MouseEvent // The mouse event that caused the zone to be in bounds.
 }
 
-func (m *Manager) findInBounds(mouse tea.MouseMsg) []*ZoneInfo {
+func (m *Manager) findInBounds(mouse tea.MouseEvent) []*ZoneInfo {
 	var zones []*ZoneInfo
 
 	m.zoneMu.RLock()
@@ -44,7 +44,7 @@ func (m *Manager) findInBounds(mouse tea.MouseMsg) []*ZoneInfo {
 // to Update() are carried through and returned.
 //
 // The tea.Cmd's that comd off the calls to Update() are wrapped in tea.Batch().
-func (m *Manager) AnyInBoundsAndUpdate(ctx tea.Context, model tea.Model, mouse tea.MouseMsg) (tea.Model, tea.Cmd) {
+func (m *Manager) AnyInBoundsAndUpdate(ctx tea.Context, model tea.Model, mouse tea.MouseEvent) (tea.Model, tea.Cmd) {
 	zones := m.findInBounds(mouse)
 
 	cmds := make([]tea.Cmd, len(zones))
@@ -61,7 +61,7 @@ func (m *Manager) AnyInBoundsAndUpdate(ctx tea.Context, model tea.Model, mouse t
 //
 // Note that if multiple zones are within bounds, each one will be sent as an event
 // in alphabetical sorted order of the ID.
-func (m *Manager) AnyInBounds(ctx tea.Context, model tea.Model, mouse tea.MouseMsg) {
+func (m *Manager) AnyInBounds(ctx tea.Context, model tea.Model, mouse tea.MouseEvent) {
 	zones := m.findInBounds(mouse)
 
 	for _, zone := range zones {

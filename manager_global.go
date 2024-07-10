@@ -146,7 +146,7 @@ func Scan(v string) string {
 //
 // Note that if multiple zones are within bounds, each one will be sent as an event
 // in alphabetical sorted order of the ID.
-func AnyInBounds(ctx tea.Context, model tea.Model, mouse tea.MouseMsg) {
+func AnyInBounds(ctx tea.Context, model tea.Model, mouse tea.MouseEvent) {
 	DefaultManager.checkInitialized()
 	DefaultManager.AnyInBounds(ctx, model, mouse)
 }
@@ -155,7 +155,7 @@ func AnyInBounds(ctx tea.Context, model tea.Model, mouse tea.MouseMsg) {
 // to Update() are carried through and returned.
 //
 // The tea.Cmd's that comd off the calls to Update() are wrapped in tea.Batch().
-func AnyInBoundsAndUpdate(ctx tea.Context, model tea.Model, mouse tea.MouseMsg) (tea.Model, tea.Cmd) {
+func AnyInBoundsAndUpdate(ctx tea.Context, model tea.Model, mouse tea.MouseEvent) (tea.Model, tea.Cmd) {
 	DefaultManager.checkInitialized()
 	return DefaultManager.AnyInBoundsAndUpdate(ctx, model, mouse)
 }
