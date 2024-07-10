@@ -44,12 +44,12 @@ func (m *Manager) findInBounds(mouse tea.MouseMsg) []*ZoneInfo {
 // to Update() are carried through and returned.
 //
 // The tea.Cmd's that comd off the calls to Update() are wrapped in tea.Batch().
-func (m *Manager) AnyInBoundsAndUpdate(model tea.Model, mouse tea.MouseMsg) (tea.Model, tea.Cmd) {
+func (m *Manager) AnyInBoundsAndUpdate(ctx tea.Context, model tea.Model, mouse tea.MouseMsg) (tea.Model, tea.Cmd) {
 	zones := m.findInBounds(mouse)
 
 	cmds := make([]tea.Cmd, len(zones))
 	for i, zone := range zones {
-		model, cmds[i] = model.Update(MsgZoneInBounds{Zone: zone, Event: mouse})
+		model, cmds[i] = model.Update(ctx, MsgZoneInBounds{Zone: zone, Event: mouse})
 	}
 
 	return model, tea.Batch(cmds...)
@@ -61,10 +61,10 @@ func (m *Manager) AnyInBoundsAndUpdate(model tea.Model, mouse tea.MouseMsg) (tea
 //
 // Note that if multiple zones are within bounds, each one will be sent as an event
 // in alphabetical sorted order of the ID.
-func (m *Manager) AnyInBounds(model tea.Model, mouse tea.MouseMsg) {
+func (m *Manager) AnyInBounds(ctx tea.Context, model tea.Model, mouse tea.MouseMsg) {
 	zones := m.findInBounds(mouse)
 
 	for _, zone := range zones {
-		_, _ = model.Update(MsgZoneInBounds{Zone: zone, Event: mouse})
+		_, _ = model.Update(ctx, MsgZoneInBounds{Zone: zone, Event: mouse})
 	}
 }
