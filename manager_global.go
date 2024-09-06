@@ -4,7 +4,7 @@
 
 package zone
 
-import tea "github.com/charmbracelet/bubbletea"
+import "github.com/charmbracelet/bubbletea/v2"
 
 // DefaultManager is an app-wide manager. To initialize it, call NewGlobal().
 var DefaultManager *Manager
@@ -146,16 +146,16 @@ func Scan(v string) string {
 //
 // Note that if multiple zones are within bounds, each one will be sent as an event
 // in alphabetical sorted order of the ID.
-func AnyInBounds(ctx tea.Context, model tea.Model, mouse tea.MouseEvent) {
+func AnyInBounds(model tea.Model, mouse tea.MouseMsg) {
 	DefaultManager.checkInitialized()
-	DefaultManager.AnyInBounds(ctx, model, mouse)
+	DefaultManager.AnyInBounds(model, mouse)
 }
 
 // AnyInBoundsAndUpdate is the same as AnyInBounds; except the results of the calls
 // to Update() are carried through and returned.
 //
 // The tea.Cmd's that comd off the calls to Update() are wrapped in tea.Batch().
-func AnyInBoundsAndUpdate(ctx tea.Context, model tea.Model, mouse tea.MouseEvent) (tea.Model, tea.Cmd) {
+func AnyInBoundsAndUpdate(model tea.Model, mouse tea.MouseMsg) (tea.Model, tea.Cmd) {
 	DefaultManager.checkInitialized()
-	return DefaultManager.AnyInBoundsAndUpdate(ctx, model, mouse)
+	return DefaultManager.AnyInBoundsAndUpdate(model, mouse)
 }

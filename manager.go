@@ -152,7 +152,7 @@ func (m *Manager) NewPrefix() string {
 // width calculations.
 //
 // When the zone manager is disabled, Mark() will return v without any changes.
-func (m *Manager) Mark(id, v string) string {
+func (m *Manager) Mark(id string, v string) string {
 	if !m.Enabled() {
 		return v
 	}

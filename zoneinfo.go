@@ -4,7 +4,7 @@
 
 package zone
 
-import tea "github.com/charmbracelet/bubbletea"
+import "github.com/charmbracelet/bubbletea/v2"
 
 // ZoneInfo holds information about the start and end positions of a zone.
 type ZoneInfo struct { // nolint:revive
@@ -36,7 +36,7 @@ func (z *ZoneInfo) IsZero() bool {
 // using a box between the start and end coordinates. If you're looking to check
 // for abnormal shapes (e.g. something that might wrap a line, but can't be
 // determined using a box), you'll likely have to implement this yourself.
-func (z *ZoneInfo) InBounds(e tea.MouseEvent) bool {
+func (z *ZoneInfo) InBounds(msg tea.MouseMsg) bool {
 	if z.IsZero() {
 		return false
 	}
@@ -45,11 +45,13 @@ func (z *ZoneInfo) InBounds(e tea.MouseEvent) bool {
 		return false
 	}
 
-	if e.X < z.StartX || e.Y < z.StartY {
+	mouse := msg.Mouse()
+
+	if mouse.X < z.StartX || mouse.Y < z.StartY {
 		return false
 	}
 
-	if e.X > z.EndX || e.Y > z.EndY {
+	if mouse.X > z.EndX || mouse.Y > z.EndY {
 		return false
 	}
 
@@ -59,10 +61,11 @@ func (z *ZoneInfo) InBounds(e tea.MouseEvent) bool {
 // Pos returns the coordinates of the mouse event relative to the zone, with a
 // basis of (0, 0) being the top left cell of the zone. If the zone is not known,
 // or the mouse event is not in the bounds of the zone, this will return (-1, -1).
-func (z *ZoneInfo) Pos(msg tea.MouseEvent) (x, y int) {
+func (z *ZoneInfo) Pos(msg tea.MouseMsg) (x, y int) {
 	if z.IsZero() || !z.InBounds(msg) {
 		return -1, -1
 	}
 
-	return msg.X - z.StartX, msg.Y - z.StartY
+	mouse := msg.Mouse()
+	return mouse.X - z.StartX, mouse.Y - z.StartY
 }

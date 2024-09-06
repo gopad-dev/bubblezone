@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/bubbletea/v2"
 )
 
 type testModel struct {
@@ -19,8 +19,8 @@ func newTestModel() *testModel {
 	return &testModel{}
 }
 
-func (m *testModel) Init() tea.Cmd {
-	return nil
+func (m *testModel) Init() (tea.Model, tea.Cmd) {
+	return m, nil
 }
 
 func (m *testModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -48,7 +48,7 @@ func TestAnyInBounds(t *testing.T) {
 		t.Error("rid not found")
 	}
 
-	_, _ = m.Update(tea.MouseMsg{X: 4, Y: 2})
+	_, _ = m.Update(tea.MouseClickMsg{X: 4, Y: 2})
 	time.Sleep(100 * time.Millisecond)
 
 	var contains bool
@@ -70,8 +70,8 @@ type testModelValue struct {
 	received []tea.Msg
 }
 
-func (m testModelValue) Init() tea.Cmd {
-	return nil
+func (m testModelValue) Init() (tea.Model, tea.Cmd) {
+	return m, nil
 }
 
 func (m testModelValue) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -98,7 +98,7 @@ func TestAnyInBoundsAndUpdate(t *testing.T) {
 		t.Error("rid not found")
 	}
 
-	m, _ = m.Update(tea.MouseMsg{X: 4, Y: 2})
+	m, _ = m.Update(tea.MouseClickMsg{X: 4, Y: 2})
 	time.Sleep(100 * time.Millisecond)
 
 	var contains bool
